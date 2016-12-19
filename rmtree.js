@@ -70,7 +70,6 @@ var rmDir = function(dirPaths, callback, dirIndex){
 
 var rmTree = function(rmPath, callback){
 	listTree(rmPath, function(files, dirs){	
-		console.log(dirs)	
 		//Remove files
 		rmFile(files, function(){
 			//Sort dirs by depth (deepest to least)
