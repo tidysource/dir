@@ -1,0 +1,27 @@
+{
+  "name": "dir",
+  "version": "0.1.0",
+  "description": "dir utility",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tidysource/dir.git"
+  },
+  "keywords": [
+    "dir",
+    "tidysource"
+  ],
+  "author": "Daniel Cobo",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/tidysource/dir/issues"
+  },
+  "homepage": "https://github.com/tidysource/dir#readme",
+  "devDependencies": {
+    "tap-colorize": "^1.2.0",
+    "tape": "^4.6.3"
+  }
+}
