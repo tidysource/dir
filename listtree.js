@@ -1,42 +1,65 @@
 var fs = require("fs");
 
-var dirs = [];              //List of directory paths
-var files = [];             //List of file paths
-var toCheck = 1;
-
-//checks if path is file or dir and adds it to the appropriate list
-var listTree = function(path, callback){ //<--- make sure the callback runs only when list is complete
-
-  fs.stat(path, function(err, stats){
-    if (err){
-      throw err;
-    }
-
-    if(stats.isDirectory()){
-      dirs.push(path);
-      fs.readdir(path, function(err, dirItems){
-        for (var j=0; j<dirItems.length ;++j){
-          var dirItem = dirItems[j];
-          listTree(path + "/" + dirItem, callback);
-        }
-        toCheck += dirItems.length;
-        --toCheck;
-        if (toCheck==0 && typeof callback === "function"){
-          callback(files, dirs);
-        }
-      });
-    }
-    else if(stats.isFile()){
-      files.push(path);
-      --toCheck;
-      if (toCheck==0 && typeof callback === "function"){
-        callback(files, dirs);
-      }
-    }
-    else{
-      //silent fail?
-    }
-  });
+var listTree = function listTree(dirPath, callback, toCheck, i, files, dirs){
+	if (typeof files === 'undefined'){
+		files = [];
+	}
+	if (typeof dirs === 'undefined'){
+		dirs = [];
+	}
+	if (typeof toCheck === 'undefined'){
+		toCheck = [dirPath];
+	}
+	if (typeof i !== 'number'){
+		i = 0;
+	}
+	
+	var checkPath = toCheck[i];
+	
+	fs.stat(
+		checkPath,
+		function(err, stats){
+			if (err){
+				throw err;
+			}
+		
+			if(stats.isDirectory()){
+				dirs.push(checkPath);
+				fs.readdir(
+					checkPath, 
+					function(err, dirItems){
+						if (err){
+							throw err;
+						}
+						for (var j=0; j<dirItems.length ;++j){
+							toCheck.push(checkPath + '/' + dirItems[j]);
+						}
+						
+						//Same as below file.push but have to double due to async
+						++i;
+						if (i<toCheck.length){
+							listTree(dirPath, callback, toCheck, i, files, dirs);
+						}
+						else if(typeof callback === 'function'){
+							callback(files, dirs);
+						}
+				});
+			}
+			else if(stats.isFile()){
+				files.push(checkPath);
+				
+				//Same as after readdir but have to double due to readdir async
+				++i;
+				if (i<toCheck.length){
+					listTree(dirPath, callback, toCheck, i, files, dirs);
+				}
+				else if(typeof callback === 'function'){
+					callback(files, dirs);
+				}
+			}
+			//else dirPath is not a directory nor file
+	});
+	
 };
 
 module.exports = listTree;
