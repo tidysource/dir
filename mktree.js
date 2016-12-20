@@ -2,8 +2,9 @@
 
 var fs = require('fs');
 var sortPaths = require('./sortPaths.js');
+var rmTree = require('./rmTree.js');
 
-var mkTree = function(toPath, dirs, callback, i){
+var mkTree = function mkTree(toPath, dirs, callback, i){
 	if (typeof i !== 'number'){
 		i = 0;
 	}
@@ -21,9 +22,9 @@ var mkTree = function(toPath, dirs, callback, i){
 	
 	//Sort by depth (shallow first)
 	if (i===0){
-		dirs = sortPaths();
+		dirs = sortPaths(dirs);
 	}
-
+		
 	fs.mkdir(toPath+dirs[i], function(err){
 		if (err){
 			throw err;
@@ -35,7 +36,7 @@ var mkTree = function(toPath, dirs, callback, i){
 		else if (typeof callback === 'function'){
 			callback();
 		}
-	});
+	});	
 };
 
 module.exports = mkTree;
