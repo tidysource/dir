@@ -5,7 +5,7 @@ var fs = require('fs');
 var listTree = require('./listtree.js');
 var sortPaths = require('./sortpaths.js');
 
-var rmFile = function(filePaths, callback, fileIndex){
+var rmFile = function rmFile(filePaths, callback, fileIndex){
 	if (typeof fileIndex !== 'number'){
 		fileIndex = 0;
 	}
@@ -36,7 +36,7 @@ var rmFile = function(filePaths, callback, fileIndex){
 	});
 };
 
-var rmDir = function(dirPaths, callback, dirIndex){
+var rmDir = function rmDir(dirPaths, callback, dirIndex){
 	if (typeof dirIndex !== 'number'){
 		dirIndex = 0;
 	}
