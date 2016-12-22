@@ -10,12 +10,12 @@ var cloneFile = require('./clonefile.js');
 
 var cloneTree = function cloneTree(fromPath,toPath,parser,callback){
 	listTree(
-		'./_content', 	//is tree we want to clone
+		fromPath,
 		function(files, dirs){
 			//-----Get file data ready-----
 			for(var i=files.length-1; i>-1; --i){
 				//Remove .files (like .DS_Store or .git)
-				if (/\/\..*$/.test(files[i])){
+				if (/^\/?\..*/.test(files[i])){
 					files.splice(i, 1);
 				}
 			}
