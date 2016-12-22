@@ -34,7 +34,7 @@ var cloneFile = function cloneFile(files, callback, i){
 			}	
 			//Parse content
 			if (typeof fileObj.parser === 'function'){
-				var parsed = fileObj.parser(txt);
+				var parsed = fileObj.parser(txt, fileObj.fromPath, fileObj.toPath);
 				if (parsed.path){
 					txt = parsed.txt;
 					fileObj.toPath = parsed.toPath;
