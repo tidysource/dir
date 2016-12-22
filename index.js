@@ -1,4 +1,5 @@
 module.exports = {
+	readFile : require('./readfile.js'),
 	cloneFile : require('./clonefile.js'),
 	listTree : require('./listtree.js'),
 	mkTree : require('./mktree.js'),
