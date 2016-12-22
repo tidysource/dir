@@ -3,6 +3,8 @@ module.exports = {
 	listTree : require('./listtree.js'),
 	mkTree : require('./mktree.js'),
 	rmTree : require('./rmtree.js'),
-	cleanTree : require('./cleanTree.js'),
+	cleanTree : require('./cleantree.js'),
+	cloneTree : require('./clonetree.js'),
+	byDepth : require('./bydepth.js'),
 	sortPaths : require('./sortpaths.js')
 };
