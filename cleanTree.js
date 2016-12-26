@@ -1,7 +1,7 @@
 'use strict';
 
 var fs = require('fs');
-var rmTree = require('./rmTree.js');
+var rmTree = require('./rmtree.js');
 
 var doCalls = function doCalls(dirPath, callback, i){
 	++i;

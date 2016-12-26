@@ -1,8 +1,8 @@
 'use strict';
 
 var fs = require('fs');
-var sortPaths = require('./sortPaths.js');
-var rmTree = require('./rmTree.js');
+var sortPaths = require('./sortpaths.js');
+var rmTree = require('./rmtree.js');
 
 var mkTree = function mkTree(toPath, dirs, callback, i){
 	if (typeof i !== 'number'){
