@@ -3,6 +3,7 @@ module.exports = {
 	cloneFile : require('./clonefile.js'),
 	listTree : require('./listtree.js'),
 	mkTree : require('./mktree.js'),
+	readTree : require('./readtree.js'),
 	rmTree : require('./rmtree.js'),
 	cleanTree : require('./cleantree.js'),
 	cloneTree : require('./clonetree.js'),
