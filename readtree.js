@@ -4,7 +4,7 @@ var listTree = require('./listtree.js');
 var readFile = require('./readfile.js');
 
 var readTree = function readTree(dir, callback){
-	dir.listTree(
+	listTree(
 		'dir', 
 		function(treePaths){
 			//Ignore files like .DS_Store or .git
@@ -16,7 +16,7 @@ var readTree = function readTree(dir, callback){
 			}
 			
 			//Read tree files
-			dir.readFile(treePaths, callback);
+			readFile(treePaths, callback);
 		});
 };
 
