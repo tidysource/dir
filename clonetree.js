@@ -40,7 +40,7 @@ var cloneTree = function cloneTree(fromPath,toPath,parser,callback){
 				dirs[i] = dirs[i].replace(rgx, toPath);
 				
 				//Prevent copy of . or / or something
-				if (!/^[A-z0-9-_]/.test(dirs[i])){
+				if (!/[A-z0-9-_]/.test(dirs[i])){
 					dirs.splice(i, 1);	
 				}
 			}
