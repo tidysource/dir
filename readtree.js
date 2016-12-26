@@ -5,7 +5,7 @@ var readFile = require('./readfile.js');
 
 var readTree = function readTree(dir, callback){
 	listTree(
-		'dir', 
+		dir, 
 		function(treePaths){
 			//Ignore files like .DS_Store or .git
 			for(var i=treePaths.length-1; i>-1; --i){
