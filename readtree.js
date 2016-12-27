@@ -20,4 +20,15 @@ var readTree = function readTree(dir, callback){
 		});
 };
 
-module.exports = readTree;
+//Promisify readTree
+var readTreePromise = function readTreePromise(dir) {
+	return new Promise(function(resolve, reject){
+		readTree(
+			dir, 
+			function(result){
+				resolve(result);
+			});
+	});
+};
+
+module.exports = readTreePromise;

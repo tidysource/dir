@@ -8,7 +8,7 @@ var cleanTree = require('./cleantree.js');
 var mkTree = require('./mktree.js');
 var cloneFile = require('./clonefile.js');
 
-var cloneTree = function cloneTree(fromPath,toPath,parser,callback){
+var cloneTree = function cloneTree(fromPath, toPath, parser, callback){
 	listTree(
 		fromPath,
 		function(files, dirs){
@@ -64,4 +64,17 @@ var cloneTree = function cloneTree(fromPath,toPath,parser,callback){
 	});
 };
 
-module.exports = cloneTree;
+//Promisify cloneTree
+var cloneTreePromise = function cloneTreePromise(fromPath, toPath, parser) {
+	return new Promise(function(resolve, reject){
+		cloneTree(
+			fromPath,
+			toPath,
+			parser, 
+			function(){
+				resolve();
+			});
+	});
+};
+
+module.exports = cloneTreePromise;

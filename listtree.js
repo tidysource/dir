@@ -41,7 +41,10 @@ var listTree = function listTree(dirPath, callback, toCheck, i, files, dirs){
 							listTree(dirPath, callback, toCheck, i, files, dirs);
 						}
 						else if(typeof callback === 'function'){
-							callback(files, dirs);
+							callback({
+									files: files, 
+									dirs: dirs
+									});
 						}
 				});
 			}
@@ -54,7 +57,10 @@ var listTree = function listTree(dirPath, callback, toCheck, i, files, dirs){
 					listTree(dirPath, callback, toCheck, i, files, dirs);
 				}
 				else if(typeof callback === 'function'){
-					callback(files, dirs);
+					callback({
+							files: files, 
+							dirs: dirs
+							});
 				}
 			}
 			//else dirPath is not a directory nor file
@@ -62,4 +68,15 @@ var listTree = function listTree(dirPath, callback, toCheck, i, files, dirs){
 	
 };
 
-module.exports = listTree;
+//Promisify listTree
+var listTreePromise = function listTreePromise(dirPath) {
+	return new Promise(function(resolve, reject){
+		listTree(
+			dirPath, 
+			function(result){
+				resolve(result);
+			});
+	});
+};
+
+module.exports = listTreePromise;

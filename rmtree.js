@@ -85,4 +85,14 @@ var rmTree = function(rmPath, callback){
 	});
 };
 
-module.exports = rmTree;
+//Promisify rmTree
+var rmTreePromise = function rmTreePromise(rmTree){
+	return new Promise(function(resolve, reject){
+		rmTree(
+			filePaths, 
+			function(){
+				resolve();
+			});
+	});
+};
+module.exports = rmTreePromise;

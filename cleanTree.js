@@ -53,4 +53,15 @@ var cleanTree = function cleanTree(dirPath, callback, i){
 	});
 };
 
-module.exports = cleanTree;
+//Promisify cleanTree
+var cleanTreePromise = function cleanTreePromise(dirPath) {
+	return new Promise(function(resolve, reject) {
+		cleanTree(
+			dirPath, 
+			function(){
+				resolve();
+			});
+	});
+};
+
+module.exports = cleanTreePromise;

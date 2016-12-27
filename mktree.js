@@ -39,4 +39,16 @@ var mkTree = function mkTree(toPath, dirs, callback, i){
 	});	
 };
 
-module.exports = mkTree;
+//Promisify mkTree
+var mkTreePromise = function mkTreePromise(toPath, dirs) {
+	return new Promise(function(resolve, reject){
+		mkTree(
+			toPath, 
+			dirs, 
+			function(){
+				resolve();
+			});
+	});
+};
+
+module.exports = mkTreePromise;

@@ -40,4 +40,15 @@ var readFile = function readFile(filePaths, callback, i, filesRead){
 	});
 };
 
-module.exports = readFile;
+//Promisify readFile
+var readFilePromise = function readFilePromise(filePaths) {
+	return new Promise(function(resolve, reject){
+		readFile(
+			filePaths, 
+			function(result){
+				resolve(result);
+			});
+	});
+};
+
+module.exports = readFilePromise;

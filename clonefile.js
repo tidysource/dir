@@ -64,4 +64,15 @@ var cloneFile = function cloneFile(files, callback, i){
 	});
 };
 
-module.exports = cloneFile;
+//Promisify cleanTree
+var cloneFilePromise = function cloneFilePromise(files) {
+	return new Promise(function(resolve, reject) {
+		cloneFile(
+			files, 
+			function(){
+				resolve();
+			});
+	});
+};
+
+module.exports = cloneFilePromise;
