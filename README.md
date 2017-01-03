@@ -39,10 +39,12 @@ var sorted = dir.sortPaths(paths);
 console.log(sorted); 
 
 /*
-['hello/world/tidy/',
+[
+'hello',
 'foo/bar',
 'hello/world',
-'hello']
+'hello/world/tidy/'
+]
 */
 ```
 
