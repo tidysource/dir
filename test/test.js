@@ -27,3 +27,24 @@ test('byDepth()', function (assert) {
 	assert.deepEqual(depth[1], ['foo/bar','hello/world']);
 	assert.deepEqual(depth[3], ['hello/world/tidy/']); //should be depth 2<--- do this by removing any trailing slash? <--- or note it's sensitive to trailing slash
 });
+
+test('sortPaths()', function (assert) {
+    assert.plan(1);
+	
+	var paths = [
+		'hello',
+		'hello/world/tidy/',
+		'hello/world',
+		'foo/bar'
+	]
+	
+	var sorted = dir.sortPaths(paths);
+	
+	assert.deepEqual(sorted,
+					[
+					'hello',
+					'foo/bar',
+					'hello/world',
+					'hello/world/tidy/'
+					]);
+});
