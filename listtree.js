@@ -71,11 +71,16 @@ var listTree = function listTree(dirPath, callback, toCheck, i, files, dirs){
 //Promisify listTree
 var listTreePromise = function listTreePromise(dirPath) {
 	return new Promise(function(resolve, reject){
-		listTree(
-			dirPath, 
-			function(result){
-				resolve(result);
-			});
+		try{
+			listTree(
+					dirPath, 
+					function(result){
+						resolve(result);
+					});
+		}
+		catch(err){
+			reject(err);
+		}
 	});
 };
 
