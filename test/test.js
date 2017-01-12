@@ -48,3 +48,52 @@ test('sortPaths()', function (assert) {
 					'hello/world/tidy/'
 					]);
 });
+
+test('mkDir()', function(assert){
+	assert.plan(2)
+
+	dir.mkDir('./test/', ['testdir', 'hello/world']).then(function(){assert.ok(true)},function(){assert.ok(false)})
+	dir.mkDir('./test/', ['testdir2', 'hello2/world2']).then(function(){assert.ok(true)},function(){assert.ok(false)})
+});
+
+/*
+test('mkTree()', function(assert){
+	dir.mkTree('./test/', ['testdir', 'hello/world'])
+	//it will throw errors for any dirs that are not to be created, 
+	//1.sort dirs by depth (shallow first)
+	//2.
+	//	for each dir 
+	//		pathDirs = split by '/'
+	//		for each pathDir 
+	//			if any part of path is not among "known existing dirs", 
+	//			check if that dir exists (if yes add to "known existing dirs"), 
+	//			if not create it (and add it to "known existing dirs")
+	//		create the dir
+	//		add dir to "known existing dirs"
+		.then();
+});
+*/
+
+
+
+test('cleanTree()', function (assert) {
+    assert.plan(2);
+
+	dir.cleanTree(1)
+		.then(null,
+		function(err){
+			assert.ok(true,err + 1)
+		})
+		.catch(function(err){
+			assert.ok(true,err)
+		});
+	
+	dir.rmFile('./helloworldfoobarhi')
+		.then(
+			function(err){
+				assert.ok(true, 'unexistent file ignored');
+			}, 
+			function(err){
+				assert.ok(false, 'unexistent file rejected rmFile promise');
+			});
+});

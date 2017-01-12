@@ -1,54 +1,54 @@
 'use strict';
 
-var fs = require('fs');
+var fs = require('tidyfs');
 
-//fromPath and toPath must include filename
-var readFile = function readFile(filePaths, callback, i, filesRead){
-	if (typeof i !== 'number'){
-		i = 0;
-	}
-	
-	if (filePaths === 'string'){
-		filePaths = [filePaths];
-	}
-	if (!filePaths.length){
-		throw new Error ('Error: Invalid param - filePaths length is 0');
-	}
-	
-	if (i===0){
-		filesRead = {};
-	}
-	
-	//Readfile
-	fs.readFile(
-		filePaths[i],
-		'utf8',
-		function(err,txt){
-			if (err){
-				throw err;
-			}	
-			
-			filesRead[filePaths[i]] = txt;
-			
-			++i;
-			if (i<filePaths.length){
-				readFile(filePaths, callback, i, filesRead);
-			}
-			else if (typeof callback === 'function'){
-				callback(filesRead);
-			}
-	});
-};
+/*
+Description:
+Reads files
 
-//Promisify readFile
-var readFilePromise = function readFilePromise(filePaths) {
-	return new Promise(function(resolve, reject){
-		readFile(
-			filePaths, 
-			function(result){
-				resolve(result);
+@files - file object
+@file.path - path must include filename and **extension**
+@file.options - options (see fs.writeFile for node) - string (sets character encoding)|object|undefined(defaults to 'utf8', if you want the buffer obj put null as encoding)
+
+Notes: 
+- For non-text items you should set options = null or options.encoding = null
+*/
+
+var readFile = function readFile(files){
+	//Conform and Validate params
+	if (typeof files === 'string'){
+		files = [files];
+	}
+	if (typeof files === 'undefined' || files.length){
+		throw new Error('dirs must be a string or array');
+	}
+	
+	var fileData = {};
+	var promiseChain = null;
+	for(var i=0; i<files.length; ++i){
+		let file = files[i];
+		if (typeof file === string){
+			file = {
+				path : file,
+				options : 'uft8'
+			}
+		}
+		if (promiseChain === null){
+			promiseChain = fs.readFile(file.path, file.options);
+		}
+		else{
+			promiseChain = promiseChain.then(function(){
+				return fs.readFile(file.path, file.options);
 			});
+		}
+		promiseChain = promiseChain.then(function(content){
+			fileData[file] = content;
+		})
+	}
+	
+	return promiseChain.then(function(){
+		return fileData;
 	});
 };
 
-module.exports = readFilePromise;
+module.exports = readFile;

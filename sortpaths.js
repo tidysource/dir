@@ -1,4 +1,4 @@
-//Sorts paths by depth (number of "/")
+//Sorts paths by depth (number of "/"), shallow first
 var sortPaths = function sortPaths(paths){
   return paths.sort(function(a,b){
                       var x = (a.match(/\//g)||[]).length;

@@ -47,4 +47,23 @@ console.log(sorted);
 ]
 */
 ```
+## Tree
+
+### .cleanTree()
+Same as `rmTree()` but **silent fail** if dir does not exist.
+
+```javascript
+var dir = require('tidydir');
+
+var dirPath = './hello';
+cleanTree(dirPath).
+	then(
+		function(){
+			console.log('done');
+		},
+		function(err){
+			console.log(err);
+		});
+});
+```
 

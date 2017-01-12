@@ -1,6 +1,9 @@
 {
   "name": "tidydir",
   "version": "0.1.0",
+  "dependencies": {
+    "tidyfs": "tidysource/tidyfs",
+  }
   "description": "dir utility",
   "main": "index.js",
   "scripts": {
