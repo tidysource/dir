@@ -21,7 +21,7 @@ var sortPaths = function sortPaths(paths){
 		else{
 		    return 1;
 		}
-		//can't return 0 because a !== b (would be file name conflict)
+		//Note: Can't return 0 because a !== b (would be file name conflict)
 		}
 	});
 };
