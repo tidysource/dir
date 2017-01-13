@@ -4,5 +4,8 @@ module.exports = {
 	readTree : require('./readTree.js'),
 	readFile : require('./readFile.js'),
 	byDepth : require('./byDepth.js'),
-	sortPaths : require('./sortPaths.js')
+	sortPaths : require('./sortPaths.js'),
+	rmFile : require('./rmFile.js'),
+	rmDir : require('./rmDir.js'),
+	rmTree : require('./rmTree.js')
 };
