@@ -7,5 +7,6 @@ module.exports = {
 	sortPaths : require('./sortPaths.js'),
 	rmFile : require('./rmFile.js'),
 	rmDir : require('./rmDir.js'),
-	rmTree : require('./rmTree.js')
+	rmTree : require('./rmTree.js'),
+	emptyTree : require('./emptyTree.js')
 };
