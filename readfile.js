@@ -43,7 +43,7 @@ var readFile = function readFile(files){
 		}
 		promiseChain = promiseChain.then(function(content){
 			fileData.push({
-							path : file
+							path : file,
 							content : content
 							};
 		})
