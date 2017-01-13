@@ -2,7 +2,7 @@
 
 var dirSep = require('path').sep;
 var fs = require('tidyfs');
-var mkDir = require('./mkDir.js');
+var mkTree = require('./mkTree.js');
 
 /*
 Description:
@@ -45,7 +45,7 @@ var mkFile = function mkFile(files){
 		dirs.push(dir);
 	}
 	//Make any missing dirs
-	var promiseChain = mkDir(dirs);
+	var promiseChain = mkTree(dirs);
 	
 	//Make files
 	for(var i=0; i<files.length; ++i){

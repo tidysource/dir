@@ -19,7 +19,7 @@ Notes:
 - if dir or any dirs in path exist already, there is no error thrown (since the desired result is already there)
 */
 
-var mkDir = function mkDir(toPath, dirs){
+var mkTree = function mkTree(toPath, dirs){
 	//Validate params
 	if (arguments.length === 1){
 		toPath = '';
@@ -67,7 +67,7 @@ var mkDir = function mkDir(toPath, dirs){
 											//Something else is there
 											if (!stats.isDirectory()){
 												//attempt to make dir anyway
-												return fs.mkDir(subPath);
+												return fs.mkTree(subPath);
 											}
 											//else dir exists
 										}, 
@@ -75,7 +75,7 @@ var mkDir = function mkDir(toPath, dirs){
 											//Dir does not exist
 											if (err.errno === -2){
 												//Create it
-												return fs.mkDir(subPath);
+												return fs.mkTree(subPath);
 											}
 											//Something else went wrong
 											else{
@@ -92,4 +92,4 @@ var mkDir = function mkDir(toPath, dirs){
 	return promiseChain;
 };
 
-module.exports = mkDir;
+module.exports = mkTree;

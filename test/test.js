@@ -49,11 +49,11 @@ test('sortPaths()', function (assert) {
 					]);
 });
 
-test('mkDir()', function(assert){
+test('mkTree()', function(assert){
 	assert.plan(2)
 
-	dir.mkDir('./test/', ['testdir', 'hello/world']).then(function(){assert.ok(true)},function(){assert.ok(false)})
-	dir.mkDir('./test/', ['testdir2', 'hello2/world2']).then(function(){assert.ok(true)},function(){assert.ok(false)})
+	dir.mkTree('./test/', ['testdir', 'hello/world']).then(function(){assert.ok(true)},function(){assert.ok(false)})
+	dir.mkTree('./test/', ['testdir2', 'hello2/world2']).then(function(){assert.ok(true)},function(){assert.ok(false)})
 });
 
 /*

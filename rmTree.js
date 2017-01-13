@@ -2,7 +2,7 @@
 
 var fs = require('tidyfs');
 
-var readDir = require('./readDir.js');
+var readTree = require('./readTree.js');
 var sortPaths = require('./sortpaths.js');
 var rmFile = require('.rmFile.js');
 
@@ -44,7 +44,7 @@ var rmOnlyDir = function(dirs){
 	return promiseChain;
 });
 
-var rmDir = function rmDir(dirs, emptyDir){
+var rmTree = function rmTree(dirs, emptyDir){
 	if (typeof dirs === 'string'){
 		dirs = [dirs];
 	}
@@ -52,7 +52,7 @@ var rmDir = function rmDir(dirs, emptyDir){
 	var promiseChain = Promise.resolve();
 	for(var i=0; i<dirs.length; ++i){
 		let dir = filePaths[i];
-		promiseChain = readDir(dir)
+		promiseChain = readTree(dir)
 			.then(function(tree){
 				return Promise.all([
 									tree,
@@ -73,4 +73,4 @@ var rmDir = function rmDir(dirs, emptyDir){
 	return promiseChain;
 };
 
-module.exports = rmDir;
+module.exports = rmTree;

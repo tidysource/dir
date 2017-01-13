@@ -66,7 +66,7 @@ var listTreePromise = function listTreePromise(dirPath) {
 };
 
 //Read single/array of dir/s
-var readDir = function readDir(dirs,separate){
+var readTree = function readTree(dirs,separate){
 	var inputWasString = false;
 	if (typeof dirs === 'string'){
 		inputWasString = true;
@@ -98,4 +98,4 @@ var readDir = function readDir(dirs,separate){
 	return promiseChain;
 };
 
-module.exports = readDir;
+module.exports = readTree;

@@ -1,7 +1,7 @@
 module.exports = {
-	mkDir : require('./mkDir.js'),
+	mkTree : require('./mkTree.js'),
 	mkFile : require('./mkFile.js'),
-	readDir : require('./readDir.js'),
+	readTree : require('./readTree.js'),
 	readFile : require('./readFile.js'),
 	byDepth : require('./byDepth.js'),
 	sortPaths : require('./sortPaths.js')
