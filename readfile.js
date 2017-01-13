@@ -23,7 +23,7 @@ var readFile = function readFile(files){
 		throw new Error('dirs must be a string or array');
 	}
 	
-	var fileData = {};
+	var fileData = [];
 	var promiseChain = null;
 	for(var i=0; i<files.length; ++i){
 		let file = files[i];
@@ -42,7 +42,10 @@ var readFile = function readFile(files){
 			});
 		}
 		promiseChain = promiseChain.then(function(content){
-			fileData[file] = content;
+			fileData.push({
+							path : file
+							content : content
+							};
 		})
 	}
 	
