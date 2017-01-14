@@ -14,12 +14,16 @@ Notes:
 - For non-text items you should set options = null or options.encoding = null
 */
 
-var readFile = function readFile(files){
+var readFile = function readFile(param){
 	//Conform and Validate params
-	if (typeof files === 'string'){
-		files = [files];
+	var files;
+	if (typeof param === 'string'){
+		files = [param];
 	}
-	if (typeof files === 'undefined' || files.length){
+	else if (Array.isArray(param)){
+		files = param;
+	}
+	else{
 		throw new Error('dirs must be a string or array');
 	}
 	
