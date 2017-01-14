@@ -54,7 +54,12 @@ var readFile = function readFile(param){
 	}
 	
 	return promiseChain.then(function(){
-		return fileData;
+		if (typeof param === 'string'){
+			return fileData[0];
+		}
+		else{
+			return fileData;
+		}
 	});
 };
 
