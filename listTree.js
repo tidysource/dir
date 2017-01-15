@@ -62,59 +62,44 @@ var listTree = function listTree(dir, callback, toCheck, i, result){
 
 //Promisify listTree
 var listTreePromise = function listTreePromise(dirs, includeDotFiles){	
-	var results = [];
-	var promiseChain = Promise.resolve();
-	for(var i=0; i<dirs.length; ++i){
-		let dir = dirs[i];
-		promiseChain = promiseChain.then(function(){
-			//Single or all together (merged) dirs
-			return new Promise(function(resolve, reject){
-				listTree(
-					dir, 
-					function(result){
-						//Format result
-						if (!includeDotFiles){
-							//Remove .files (like .DS_Store or .git)
-							for(var i=result.files.length-1; i>-1; --i){
-								if (/(?:\/|^)\.[^\/]*$/.test(result.files[i])){
-									result.files.splice(i, 1);
-								}
-							}
+	return new Promise(function(resolve, reject){
+		listTree(
+			dirs, 
+			function(result){
+				//Format result
+				if (!includeDotFiles){
+					//Remove .files (like .DS_Store or .git)
+					for(var i=result.files.length-1; i>-1; --i){
+						if (/(?:\/|^)\.[^\/]*$/.test(result.files[i])){
+							result.files.splice(i, 1);
 						}
-						//Remove duplicates
-						var tmpChace = {};
-						for(var i=result.files.length-1; i>-1; --i){
-							var filePath = result.files[i];
-							if (tmpCache[filePath]){
-								result.files.splice(i, 1);
-							}
-							else{
-								tmpCache[filePath] = true;
-							}
-						}
-						tmpChache = {};
-						for(var i=result.dirs.length-1; i>-1; --i){
-							var dirPath = result.dirs[i];
-							if (tmpCache[filePath]){
-								result.dirs.splice(i, 1);
-							}
-							else{
-								tmpCache[dirPath] = true;
-							}
-						}
-						//Resolve promise with results {dirs : [...], files :[...],}
-						resolve(result);
-					}); 
-			});
-			//END Single or all together (merged) dirs
-		}).
-		then(function(result){
-			results.push(result)
-		});
-	}
-	return promiseChain.then(function(){
-		return results;
-	})
+					}
+				}
+				//Remove duplicates
+				var tmpChace = {};
+				for(var i=result.files.length-1; i>-1; --i){
+					var filePath = result.files[i];
+					if (tmpCache[filePath]){
+						result.files.splice(i, 1);
+					}
+					else{
+						tmpCache[filePath] = true;
+					}
+				}
+				tmpChache = {};
+				for(var i=result.dirs.length-1; i>-1; --i){
+					var dirPath = result.dirs[i];
+					if (tmpCache[filePath]){
+						result.dirs.splice(i, 1);
+					}
+					else{
+						tmpCache[dirPath] = true;
+					}
+				}
+				//Resolve promise with results {dirs : [...], files :[...],}
+				resolve(result);
+			}); 
+	});
 };
 //readTree returns the same as this but returns file objects instead?
 module.exports = listTreePromise;
