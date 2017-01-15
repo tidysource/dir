@@ -2,7 +2,6 @@
 
 var fs = require('tidyfs');
 
-var readTree = require('./readTree.js');
 var sortPaths = require('./sortpaths.js');
 var rmFile = require('.rmFile.js');
 
