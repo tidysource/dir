@@ -1,20 +1,7 @@
 'use strict';
 
 var fs = require('tidyfs');
-
-var removeDuplicates = function removeDuplicates(arr){
-	var tmpChache = {};
-	for(var i=arr.length-1; i>-1; --i){
-		var val = arr[i];
-		if (tmpCache[val]){
-			arr.splice(i, 1);
-		}
-		else{
-			tmpCache[val] = true;
-		}
-	}
-	return arr;
-};
+var removeDuplicates = require('./removeDuplicates.js');
 
 //Read single dirPath
 var listTree = function listTree(dir, callback, toCheck, i, result){
