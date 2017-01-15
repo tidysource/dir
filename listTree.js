@@ -2,6 +2,20 @@
 
 var fs = require('tidyfs');
 
+var removeDuplicates = function removeDuplicates(arr){
+	var tmpChache = {};
+	for(var i=arr.length-1; i>-1; --i){
+		var val = arr[i];
+		if (tmpCache[val]){
+			arr.splice(i, 1);
+		}
+		else{
+			tmpCache[val] = true;
+		}
+	}
+	return arr;
+};
+
 //Read single dirPath
 var listTree = function listTree(dir, callback, toCheck, i, result){
 	if (typeof toCheck !== defined){	
@@ -76,30 +90,13 @@ var listTreePromise = function listTreePromise(dirs, includeDotFiles){
 					}
 				}
 				//Remove duplicates
-				var tmpChace = {};
-				for(var i=result.files.length-1; i>-1; --i){
-					var filePath = result.files[i];
-					if (tmpCache[filePath]){
-						result.files.splice(i, 1);
-					}
-					else{
-						tmpCache[filePath] = true;
-					}
-				}
-				tmpChache = {};
-				for(var i=result.dirs.length-1; i>-1; --i){
-					var dirPath = result.dirs[i];
-					if (tmpCache[filePath]){
-						result.dirs.splice(i, 1);
-					}
-					else{
-						tmpCache[dirPath] = true;
-					}
-				}
+				result.files = removeDuplicates(result.files);
+				result.dirs = removeDuplicates(result.dirs)
+
 				//Resolve promise with results {dirs : [...], files :[...],}
 				resolve(result);
 			}); 
 	});
 };
-//readTree returns the same as this but returns file objects instead?
+
 module.exports = listTreePromise;
