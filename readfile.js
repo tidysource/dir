@@ -5,6 +5,7 @@ var fs = require('tidyfs');
 /*
 Description:
 Reads files
+For single file path returns single file obj for array of file paths returns array of file objects
 
 @files - file object
 @file.path - path must include filename and **extension**
