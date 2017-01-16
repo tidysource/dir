@@ -1,6 +1,7 @@
 module.exports = {
 	mkTree : require('./mkTree.js'),
 	mkFile : require('./mkFile.js'),
+	listTree : require('./listTree.js'),
 	readTree : require('./readTree.js'),
 	readFile : require('./readFile.js'),
 	byDepth : require('./byDepth.js'),
