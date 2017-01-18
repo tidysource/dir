@@ -54,18 +54,18 @@ console.log(sorted);
 var dir = require('tidydir');
 
 var paths = [
-	'./hello',
+	'./hello.js',
 	'./foo/bar',
-	'./hello/world',
+	'./hello/world.js',
 	'./hello/world/tidy/'
 ]
 
 //Will return an array of file objects
 var fileObjects = dir.readFile(paths);
 
-console.log(fileObjects[0]); //[{path : './hello', content: 'helloworld'}]
+console.log(fileObjects[0]); //[{path : './hello.js', content: 'helloworld'}]
 
 //A single file object
 var fileObj = dir.readFile(paths);
-console.log(fileObj); //{path : './hello', content: 'helloworld'}
+console.log(fileObj); //{path : './hello.js', content: 'helloworld'}
 ```
