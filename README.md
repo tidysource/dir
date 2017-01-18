@@ -47,23 +47,25 @@ console.log(sorted);
 ]
 */
 ```
-## Tree
+## Read
 
-### .cleanTree()
-Same as `rmTree()` but **silent fail** if dir does not exist.
-
+### readFile()
 ```javascript
 var dir = require('tidydir');
 
-var dirPath = './hello';
-cleanTree(dirPath).
-	then(
-		function(){
-			console.log('done');
-		},
-		function(err){
-			console.log(err);
-		});
-});
-```
+var paths = [
+	'hello',
+	'foo/bar',
+	'hello/world',
+	'hello/world/tidy/'
+]
 
+//Will return an array of file objects
+var fileObjects = dir.readFile(paths);
+
+console.log(fileObjects[0]); //[{path : 'hello', content: 'helloworld'}]
+
+//A single file object
+var fileObj = dir.readFile(paths);
+console.log(fileObj); //{path : 'hello', content: 'helloworld'}
+```
