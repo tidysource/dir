@@ -69,3 +69,29 @@ console.log(fileObjects[0]); //[{path : './hello.js', content: 'helloworld'}]
 var fileObj = dir.readFile(paths);
 console.log(fileObj); //{path : './hello.js', content: 'helloworld'}
 ```
+
+### listTree()
+```javascript
+var dir = require('tidydir');
+
+//For a given tree structure
+var paths = [
+	'./hello',
+	'./hello/bar.js',
+	'./hello/world.txt',
+	'./hello/foo/
+	'./hello/bar/code'
+]
+
+var treeList = dir.listTree('./hello');
+console.log(treeList);
+/*
+{
+dirs : ['./hello',
+		'./hello/foo',
+		'./hello/bar/code'],
+files : ['./hello/bar.js',
+		'./hello/world.txt',]
+}
+*/
+```
