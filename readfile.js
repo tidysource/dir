@@ -29,29 +29,23 @@ var readFile = function readFile(param){
 	}
 	
 	var fileData = [];
-	var promiseChain = null;
+	var promiseChain = Promise.resolve();
 	for(var i=0; i<files.length; ++i){
 		let file = files[i];
-		if (typeof file === string){
+		if (typeof file === 'string'){
 			file = {
 				path : file,
 				options : 'uft8'
 			}
 		}
-		if (promiseChain === null){
-			promiseChain = fs.readFile(file.path, file.options);
-		}
-		else{
-			promiseChain = promiseChain.then(function(){
-				return fs.readFile(file.path, file.options);
-			});
-		}
-		promiseChain = promiseChain.then(function(content){
-			fileData.push({
-							path : file,
-							content : content
-							};
+		//else assumes file is a file object
+		promiseChain = promiseChain.then(function(){
+			return fs.readFile(file.path, file.options);
 		})
+		.then(function(content){
+			file.content = content;
+			fileData.push(file);
+		});
 	}
 	
 	return promiseChain.then(function(){
