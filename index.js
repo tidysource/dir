@@ -6,6 +6,7 @@ module.exports = {
 	readFile : require('./readFile.js'),
 	byDepth : require('./byDepth.js'),
 	sortPaths : require('./sortPaths.js'),
+	fileExt : require('./fileExt.js'),
 	rmFile : require('./rmFile.js'),
 	rmDir : require('./rmDir.js'),
 	rmTree : require('./rmTree.js'),
