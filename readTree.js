@@ -3,8 +3,8 @@
 var fs = require('tidyfs');
 var listTree = require('listTree');
 
-var readTree = function readTree(dirs){
-	return listTree(dirs)
+var readTree = function readTree(dirs, includeDotFiles){
+	return listTree(dirs, includeDotFiles)
 		.then(function(tree){
 			//reaturn tree and readFIles
 			return Promise.all([
