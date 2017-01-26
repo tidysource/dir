@@ -95,3 +95,13 @@ files : ['./hello/bar.js',
 }
 */
 ```
+
+### readTree()
+Returns tree object.
+
+```javascript
+var tree = readTree('./');
+
+tree.files //like readFile for all files within tree
+tree.dirs //list of all dirs
+```
