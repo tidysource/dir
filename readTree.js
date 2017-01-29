@@ -1,6 +1,6 @@
 'use strict';
 
-var fs = require('tidyfs');
+var readFile = require('./readFile.js');
 var listTree = require('listTree');
 
 var readTree = function readTree(dirs, includeDotFiles){
@@ -9,7 +9,7 @@ var readTree = function readTree(dirs, includeDotFiles){
 			//reaturn tree and readFIles
 			return Promise.all([
 								Promise.resolve(tree),
-								fs.readFile(tree.files)
+								readFile(tree.files)
 								]);
 		})
 		.then(function(vals){
