@@ -7,6 +7,7 @@ module.exports = {
 	byDepth : require('./byDepth.js'),
 	sortPaths : require('./sortPaths.js'),
 	fileExt : require('./fileExt.js'),
+	rmExt : require('./rmExt.js'),
 	rmFile : require('./rmFile.js'),
 	rmDir : require('./rmDir.js'),
 	rmTree : require('./rmTree.js'),
