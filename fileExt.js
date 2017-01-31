@@ -6,7 +6,7 @@ var fileExt = function fileExt(filePath){
 		throw new Error ('Invalid filePath argument');
 	}
 	else{
-		return ext[0];
+		return ext[0].toLowerCase();;
 	}	
 }
 
