@@ -105,3 +105,22 @@ var tree = readTree('./');
 tree.files //like readFile for all files within tree
 tree.dirs //list of all dirs
 ```
+
+## Write
+
+## Remove
+
+### rmFile()
+Removes file/s.
+
+@filePath | string, array
+
+### rmTree()
+Removes folder/s and it's content.
+
+@dirPath | string, array
+
+## Paths
+
+### fileExt()
+### rmExt()
