@@ -108,6 +108,9 @@ tree.dirs //list of all dirs
 
 ## Write
 
+### mkFile()
+### mkTree()
+
 ## Remove
 
 ### rmFile()
