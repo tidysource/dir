@@ -30,4 +30,7 @@ path.dotfile = require('./dotfile.js');
 avaliableProp(path, 'tree');
 path.tree = require('./tree.js');
 
+avaliableProp(path, 'filter');
+path.filter = require('./filter.js');
+
 module.exports = path;
