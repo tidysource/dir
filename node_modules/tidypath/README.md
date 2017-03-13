@@ -125,12 +125,11 @@ var paths = [
 		'.dot',
 		0
 	];
-//Same as var path without 0
-var onlyStrings = paths.slice(0,-1);	
 	
 path.filter('./hello.txt', '.txt');	//['./hello.txt']
 path.filter(paths, '.js');	//['hello.js']
 path.filter(paths, ['.js']);	//['hello.js']
 path.filter(paths, path.dotfile);	//['.dot']
-path.filter(paths), onlyStrings);	//['hello.js','hello/world.txt','.dot']
+path.filter(paths);	//['hello.js','hello/world.txt','.dot']
+path.filter(paths, '.js', false);	//['hello.js','hello/world.txt','.dot',0];
 ```

@@ -2,8 +2,12 @@
 
 var pathExt = require('./ext.js');
 
-module.exports = function filter(paths, filters){
+module.exports = function filter(paths, filters, param3){
 	var paths = paths.slice();
+	var whitelist = true;
+	if (param3 === false){
+		whitelist = false;
+	}
 	var keep;
 	if (!Array.isArray(paths)){
 		paths = [paths];
@@ -15,10 +19,12 @@ module.exports = function filter(paths, filters){
 		keep = function keep(path){
 			var ext = pathExt(path);
 			if (filters.indexOf(ext) > -1){
-				return true;
+				if (whitelist){return true;}
+				else{return false;}				
 			}
 			else{
-				return false;
+				if (whitelist){return false;}
+				else{return true;}
 			}
 		}
 	}
