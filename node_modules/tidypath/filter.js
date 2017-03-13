@@ -19,12 +19,10 @@ module.exports = function filter(paths, filters, param3){
 		keep = function keep(path){
 			var ext = pathExt(path);
 			if (filters.indexOf(ext) > -1){
-				if (whitelist){return true;}
-				else{return false;}				
+				return true;
 			}
 			else{
-				if (whitelist){return false;}
-				else{return true;}
+				return false;
 			}
 		}
 	}
@@ -39,10 +37,18 @@ module.exports = function filter(paths, filters, param3){
 	
 	for(var i=paths.length-1; i>-1; --i){
 		var path = paths[i];
-		if (typeof path !== 'string'
-		 || !keep(path)){
-			 paths.splice(i, 1);
-		 }
+		
+		if (typeof path !== 'string'){
+			paths.splice(i, 1);
+		}
+		else{
+			if (whitelist && !keep(path)){
+			 	paths.splice(i, 1);
+			}
+			else if (!whitelist && keep(path)){
+				paths.splice(i, 1);
+			}
+		}		
 	}
 		
 	return paths;
