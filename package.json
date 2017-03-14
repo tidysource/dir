@@ -1,30 +1,43 @@
 {
   "name": "tidydir",
-  "version": "0.1.0",
-  "dependencies": {
-    "tidyfs": "tidysource/tidyfs",
-  }
-  "description": "dir utility",
+  "version": "1.0.0",
+  "description": "Utility for handling (read, write, remove) files and directories",
   "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
   "scripts": {
     "test": "tape test/*.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tidysource/dir.git"
+    "url": "git+https://github.com/tidysource/tidydir.git"
   },
   "keywords": [
-    "dir",
-    "tidysource"
+    "node",
+    "files",
+    "file",
+    "folders",
+    "folder",
+    "tree",
+    "directory",
+    "write",
+    "read",
+    "remove"
   ],
-  "author": "Daniel Cobo",
-  "license": "UNLICENSED",
+  "author": "TidySource (Daniel Cobo)",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tidysource/dir/issues"
+    "url": "https://github.com/tidysource/tidydir/issues"
   },
-  "homepage": "https://github.com/tidysource/dir#readme",
+  "homepage": "https://github.com/tidysource/tidydir#readme",
+  "dependencies": {
+    "rmduplicate": "^1.0.0",
+    "rmtrailing": "^1.0.2",
+    "tidyfs": "^1.1.0",
+    "tidypath": "^1.4.1"
+  },
   "devDependencies": {
-    "tap-colorize": "^1.2.0",
-    "tape": "^4.6.3"
+    "tidytest": "^1.0.1"
   }
 }
