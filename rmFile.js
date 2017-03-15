@@ -2,8 +2,6 @@
 
 var fs = require('tidyfs');
 
-var sortPaths = require('./sortpaths.js');
-
 var rmFile = function rmFile(filePaths){
 	if (typeof filePaths === 'string'){
 		filePaths = [filePaths];
@@ -12,6 +10,9 @@ var rmFile = function rmFile(filePaths){
 	var promiseChain = Promise.resolve();
 	for(var i=0; i<filePaths.length; ++i){
 		let filePath = filePaths[i];
+		
+		//<--- add check so file can not remove itself?
+		
 		promiseChain = promiseChain.then(function(){
 			return fs.rmFile(filePath);
 		})
