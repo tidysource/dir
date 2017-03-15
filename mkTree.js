@@ -1,7 +1,6 @@
 'use strict';
 
-var dirSep = require('path').sep;
-var sortPaths = require('./sortpaths.js');
+var path = require('tidypath');
 var fs = require('tidyfs');
 
 /*
@@ -10,8 +9,7 @@ Makes directiories, inclusing the necessary path. For example ./foo/bar/hello if
 Returns a promise.
 If directories exist returned promise will be resolved.
 If it can't make any of the directiories, the returned promise will be rejected.
-	
-@toPath - path to which the dirs are relative (path prepend for each dir) | string, undefined (defaults to empty string)
+
 @dirs - paths of dirs | string,array 
 
 Notes: 
@@ -19,72 +17,55 @@ Notes:
 - if dir or any dirs in path exist already, there is no error thrown (since the desired result is already there)
 */
 
-var mkTree = function mkTree(toPath, dirs){
-	//Validate params
-	if (arguments.length === 1){
-		toPath = '';
-	}
+var mkTree = function mkTree(dirs){
 	if (typeof dirs === 'string'){
 		dirs = [dirs];
 	}
-	else if (typeof dirs !== 'undefined' && dirs.length){
-		//Sort dirs by depth (shallow first)
-		dirs = sortPaths(dirs);
-	}
-	else{
-		throw new Error('dirs must be a string or array');
-	}
+	dirs = path.byDepth(dirs);
 
 	//Known existing dirs
 	var existing = {};
 	//var to enable promise chaining
-	var promiseChain = null;
+	var promiseChain = Promise.resolve();
 	
 	for (var i=0; i<dirs.length; ++i){
-		let dir = toPath + dirs[i];
+		let dir = dirs[i];
 		
-		var subPaths = dir.split(dirSep);
-
+		var subPaths = dir.split(path.sep);
 		for(var j=0; j<subPaths.length; ++j){
-			let subPath = subPaths.slice(0,j).join(dirSep);
+			let subPath = subPaths.slice(0,j).join(path.sep);
+
 			if (subPath.length){
-				subPath += dirSep;
+				subPath += path.sep;
 			}
 			subPath += subPaths[j];
 						
 			if (!existing[subPath]){
-				if (promiseChain === null){
-					promiseChain = fs.stat(subPath);
-				}
-				else{
-					promiseChain = promiseChain.then(function(){
-						return fs.stat(subPath);
-					});
-				}
-				promiseChain = promiseChain
-									.then(
-										function(stats){
-											//Something else is there
-											if (!stats.isDirectory()){
-												//attempt to make dir anyway
-												return fs.mkTree(subPath);
-											}
-											//else dir exists
-										}, 
-										function(err){
-											//Dir does not exist
-											if (err.errno === -2){
-												//Create it
-												return fs.mkTree(subPath);
-											}
-											//Something else went wrong
-											else{
-												throw err;
-											}
-										})
-									.then(function(){
-										existing[subPath] = true;
-									});
+				existing[subPath] = true;
+				promiseChain = promiseChain.then(function(){
+					return fs.mkDir(subPath);
+				})
+				.catch(function(err){
+					if (err.errno === -17){ //err.code === 'EEXIST'
+						return Promise.all([
+											fs.stat(subPath),
+											Promise.resolve(err)
+											]);
+					}
+					else{
+						throw err;
+					}
+				})
+				.then(function(vals){
+					if (vals){ //if above catch is invoked
+						var stat = vals[0];
+						var err = vals[1];
+						if (!stat.isDirectory()){
+							throw err;
+						}
+						//else dir exists	
+					}
+				});
 			}
 		}
 	}
