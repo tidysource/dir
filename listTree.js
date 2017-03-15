@@ -1,89 +1,76 @@
 'use strict';
 
 var fs = require('tidyfs');
-var removeDuplicates = require('./removeDuplicates.js');
+var path = require('tidypath');
+var rmTrailing = require('rmtrailing');
 
-//Read single dirPath
-var listTree = function listTree(dir, callback, toCheck, i, result){
-	if (typeof toCheck !== defined){	
-		if (dir === 'string'){
-			toCheck = [dir];
-		}
-		else if (Array.isArray(dir)){
-			toCheck = dir;
-		}
-		else{
-			throw new Error('Invalid parameter: dir must be a string or an array');
-		}
-		
-	}
-	if (typeof i !== 'number'){
-		i = 0;
-	}
-	if (typeof result !== 'object'){
-		result = {
-			dirs : [],
-			files : []
-		};
-	}
-
-	var checkPath = toCheck[i];	
-	fs.stat(checkPath)
+var listDir = function listDir(paths, i, result){
+	paths[i] = rmTrailing(paths[i], path.sep);
+	return fs.stat(paths[i])
 		.then(function(stats){
 			if (stats.isFile()){
-				result.files.push(checkPath);
+				result.files.push(paths[i]);
 			}
 			else if (stats.isDirectory()){
-				result.dirs.push(checkPath);
-				return fs.readDir(checkPath);
+				result.dirs.push(paths[i]);
+				return fs.readDir(paths[i]);
 			}
-			//else is not a file nor dir
+			//else not a file nor dir
 		})
 		.then(function(dirContent){
 			if (typeof dirContent !== 'undefined'){
-				for(var i=0; i<dirContent.length; ++i){
-					var itemPath = dirContent[i];
-					toCheck.push(itemPath);
+				//all items in dirContent need to have preprend of the dir they came from
+				for(var j=0; j<dirContent.length; ++j){
+					paths.push([
+								paths[i],
+								path.sep,
+								dirContent[j]
+								].join(''));
 				}
 			}
-		})
-		.then(function(){
-			if (i < toCheck.length){
-				++i;
-				listTree(dir, callback, toCheck, i, result);
+			++i;
+			if (i < paths.length){
+				return listDir(paths, i, result);
 			}
 			else{
-				callback(null,result);
+				return result;
 			}
 		})
-		.catch(function(err){
-			callback(err, result)	
-		});
 };
 
-//Promisify listTree
-var listTreePromise = function listTreePromise(dirs, includeDotFiles){	
-	return new Promise(function(resolve, reject){
-		listTree(
-			dirs, 
-			function(result){
-				//Format result
-				if (!includeDotFiles){
-					//Remove .files (like .DS_Store or .git)
-					for(var i=result.files.length-1; i>-1; --i){
-						if (/(?:\/|^)\.[^\/]*$/.test(result.files[i])){
-							result.files.splice(i, 1);
-						}
+var listTree = function listTree(paths, filter){
+	if (typeof paths === 'string'){
+		paths = [paths];
+	}
+	else if (!Array.isArray(paths)){
+		throw new Error('Parameter dirs must be a string or an array of dir paths.');
+	}
+	
+	var result = {
+		files : [],
+		dirs : []
+	}
+	
+	var param = paths.slice();
+	for(var i=0; i<param.length; ++i){
+		param[i] = rmTrailing(param[i], path.sep);
+	}
+	
+	return listDir(paths, 0, result)
+			.then(function(result){	
+				result.files = path.filter(result.files, filter);
+				for(var i=result.files.length-1; i>-1; --i){
+					if (param.indexOf(result.files[i]) > -1){
+						result.files.splice(i, 1);
 					}
 				}
-				//Remove duplicates
-				result.files = removeDuplicates(result.files);
-				result.dirs = removeDuplicates(result.dirs)
-
-				//Resolve promise with results {dirs : [...], files :[...],}
-				resolve(result);
-			}); 
-	});
+				for(var i=result.dirs.length-1; i>-1; --i){
+					if (param.indexOf(result.dirs[i]) > -1){
+						result.dirs.splice(i, 1);
+					}
+				}
+				return result;
+			});
 };
 
-module.exports = listTreePromise;
+module.exports = listTree;
