@@ -1,8 +1,8 @@
 'use strict';
 
-var dirSep = require('path').sep;
 var fs = require('tidyfs');
 var mkTree = require('./mkTree.js');
+var path = require('tidypath');
 
 /*
 Description:
@@ -16,32 +16,42 @@ Makes files, including the necessary path.
 Notes: 
 - Paths may use either / or \
 - it will make any missing dirs in the filepath
+- overwrites existing files with same path (if file already exists at same path, it will overwrite it)
 */
 
+/*
+Possible params:
+- path, content, options
+- {path, content, options}, options 
+- [{path,content,options}], options
 
-var fileDir = function fileDir(filePath){
-	var fileName = new RegExp('[^' + dirSep + ']\\.[\\w]+$');
-	if (!fileName.test(filePath)){
-		throw new Error('Invalid file path:' + filePath);
-	}
-	else{
-		return filePath.replace(fileName, '');
-	}
-};
+options within object overrides param options
+*/
 
-var mkFile = function mkFile(files){
-	//Conform and Validate params
-	if (typeof files === 'string'){
-		files = [files];
+var mkFile = function mkFile(param1, param2, param3){
+	var files = [];
+	var options;
+	if (typeof param1 === 'string'){
+		files.push({
+			path : param1,
+			content : param2,
+			options : param3
+		});
 	}
-	if (typeof files === 'undefined' || files.length){
-		throw new Error('dirs must be a string or array');
+	else if (Array.isArray(param1)){
+		files = param1;
+	}
+	else if (typeof param1 === 'object'){
+		files.push(param1);
+		if (typeof param2 !== 'undefined'){
+			options = param2;
+		}
 	}
 	
 	var dirs = [];
 	for(var i=0; i<files.length; ++i){
 		var file = files[i];
-		var dir = fileDir(file.path);
+		var dir = path.tree(file.path);
 		dirs.push(dir);
 	}
 	//Make any missing dirs
@@ -51,17 +61,22 @@ var mkFile = function mkFile(files){
 	for(var i=0; i<files.length; ++i){
 		let file = files[i];
 		
-		if (typeof file.content !== 'string'){
-			throw new Error('file content must be a string');
-		}
-		
+		//Set default options
 		if (typeof file.options === 'undefined'){
-			file.options = 'utf8';
+			if (typeof options !== 'undefined'){
+				file.options = options;
+			}
+			else{
+				file.options = 'utf8';
+			}
 		}
 		
-		promiseChain = fs.writeFile(file.path, 
-									file.content, 
-									file.options);
+		promiseChain = promiseChain
+			.then(function(){
+				return fs.mkFile(file.path, 
+								file.content, 
+								file.options);
+			});				
 	}
 	
 	return promiseChain;
