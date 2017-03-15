@@ -1,7 +1,7 @@
 'use strict';
 
 var fs = require('tidyfs');
-
+var path = require('tidypath');;
 /*
 Description:
 Reads files
@@ -15,41 +15,72 @@ Notes:
 - For non-text items you should set options = null or options.encoding = null
 */
 
-var readFile = function readFile(param){
-	//Conform and Validate params
-	var files;
-	if (typeof param === 'string'){
-		files = [param];
+/*
+path, options, filter
+{path, options}, options, filter
+[path], options, filter
+[{path, options}], options, filter
+*/
+
+var readFile = function readFile(param1, param2, filter){
+	var files = [];
+	var options;
+	if (typeof param1 === 'string'){
+		files.push({path : param1});
 	}
-	else if (Array.isArray(param)){
-		files = param;
+	else if (typeof param1 === 'object'
+		&& !Array.isArray(param1)){
+		files.push(param1);
 	}
 	else{
-		throw new Error('dirs must be a string or array');
+		files = param1;
+	}
+	//options vs filter
+	if (typeof param2 === 'string'){
+		if (param2 === 'dotifle'
+		 || param2.slice(0,1) === '.'){
+			 filter = param2;
+		 }
+	}
+	else if (typeof param2 === 'function'
+	 || Array.isArray(param2)){
+		filter = param2;
+	}
+	else{
+		options = param2;
 	}
 	
 	var fileData = [];
 	var promiseChain = Promise.resolve();
+
 	for(var i=0; i<files.length; ++i){
 		let file = files[i];
 		if (typeof file === 'string'){
-			file = {
-				path : file,
-				options : 'uft8'
+			file = {path : file};
+		}
+		//else file should be object
+		if (typeof file.options === 'undefined'){
+			if (typeof options !== 'undefined'){
+				file.options = options;
+			}
+			else{
+				file.options = 'utf8';
 			}
 		}
-		//else assumes file is a file object
-		promiseChain = promiseChain.then(function(){
-			return fs.readFile(file.path, file.options);
-		})
-		.then(function(content){
-			file.content = content;
-			fileData.push(file);
-		});
+		
+		if (path.filter(file.path, filter).length){
+			promiseChain = promiseChain.then(function(){
+				return fs.readFile(file.path, file.options);
+			})
+			.then(function(content){
+				file.content = content;
+				fileData.push(file);
+			});	
+		}
 	}
 	
 	return promiseChain.then(function(){
-		if (typeof param === 'string'){
+		if (!Array.isArray(param1)){//string or object
 			return fileData[0];
 		}
 		else{
