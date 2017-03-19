@@ -17,7 +17,7 @@ Tests
 =====
 */
 test('mkTree()', function(assert){ 
-	assert.plan(2);
+	assert.plan(3);
 	
 	dir.mkTree('./test/testdir/helloworld')
 		.then(function(){
@@ -40,10 +40,18 @@ test('mkTree()', function(assert){
 		.catch(function(err){
 			assert.fail(err);
 		});
+		
+	dir.mkTree([]).then(function(){
+		assert.ok(true, 'Empty array of trees to make');
+	})
+	.catch(function(err){
+		assert.fail(err);
+	});
 });
 
 test('mkFile()', function(assert){ 
-	assert.plan(6);
+	assert.plan(7);
+	
 	dir.mkFile('./test/testdir/hello.txt', 'world','utf8')
 		.then(function(){
 			assert.ok(true, 'Make file in existing folder');
@@ -127,6 +135,13 @@ test('mkFile()', function(assert){
 		.catch(function(err){
 			assert.fail(err);
 		});	
+		
+	dir.mkFile([]).then(function(){
+		assert.ok(true, 'Empty array of files to make');
+	})
+	.catch(function(err){
+		assert.fail(err);
+	});
 });
 
 test('listTree()', function(assert){
@@ -185,7 +200,7 @@ test('listTree()', function(assert){
 });
 
 test('readFile()', function(assert){
-	assert.plan(7);
+	assert.plan(8);
 
 	dir.readFile('./test/testdir/hello.txt', 'utf8')
 		.then(function(file){
@@ -311,10 +326,17 @@ test('readFile()', function(assert){
 		.catch(function(err){
 			assert.fail(err);
 		});
+		
+	dir.readFile([]).then(function(){
+		assert.ok(true, 'Empty array of files to read');
+	})
+	.catch(function(err){
+		assert.fail(err);
+	});
 });
 
 test('readTree', function(assert){
-	assert.plan(7);
+	assert.plan(8);
 
 	dir.readTree('./test/testdir/foo/', 'utf8')
 		.then(function(tree){
@@ -534,10 +556,17 @@ test('readTree', function(assert){
 		.catch(function(err){
 			assert.fail(err);
 		});	
+		
+	dir.readTree([]).then(function(){
+		assert.ok(true, 'Empty array of trees to read');
+	})
+	.catch(function(err){
+		assert.fail(err);
+	});
 });
 
 test('rmFile()', function(assert){
-	assert.plan(2);
+	assert.plan(3);
 	
 	dir.rmFile('./test/testdir/hello.txt')
 		.then(function(){
@@ -577,6 +606,13 @@ test('rmFile()', function(assert){
 				assert.fail(err);
 			}
 		});
+		
+	dir.rmFile([]).then(function(){
+		assert.ok(true, 'Empty array of files to remove');
+	})
+	.catch(function(err){
+		assert.fail(err);
+	});
 });
 
 test('rmDir()', function(assert){
@@ -624,7 +660,7 @@ test('rmDir()', function(assert){
 });
 
 test('emptyTree()', function(assert){
-	assert.plan(2);
+	assert.plan(3);
 	
 	dir.emptyTree('./test/testdir/helloworld/')
 		.then(function(){
@@ -665,10 +701,17 @@ test('emptyTree()', function(assert){
 		.catch(function(err){
 			assert.fail(err);
 		});
+		
+	dir.emptyTree([]).then(function(){
+		assert.ok(true, 'Empty array of trees to empty');
+	})
+	.catch(function(err){
+		assert.fail(err);
+	});	
 });
 			
 test('rmTree()', function(assert){
-	assert.plan(2);
+	assert.plan(3);
 	
 	dir.rmTree('./test/testdir/foobar')
 		.then(function(){
@@ -710,4 +753,12 @@ test('rmTree()', function(assert){
 				assert.fail(err);
 			}
 		});
+	
+	
+	dir.rmTree([]).then(function(){
+		assert.ok(true, 'Empty array of trees to remove');
+	})
+	.catch(function(err){
+		assert.fail(err);
+	});
 });
