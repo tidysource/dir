@@ -3,7 +3,7 @@
 var fs = require('tidyfs');
 
 //Removes multiple dirs (like rmTree, except it will fail on non-empty dirs)
-var rmDir = function(dirs){
+var rmDir = function rmDir(dirs){
 	if (typeof dirs === 'string'){
 		dirs = [dirs];
 	}
