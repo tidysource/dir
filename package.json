@@ -1,6 +1,6 @@
 {
   "name": "tidydir",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Utility for handling (read, write, remove) files and directories",
   "main": "index.js",
   "directories": {
