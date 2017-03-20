@@ -1,129 +1,123 @@
 # Tidy Dir
+Simplified way to work with files and folders in NodeJS.
 
-## General
-### .byDepth()
-Returns an array of arrays of paths directory depth.
-```javascript
-var dir = require('tidydir');
+## How to use
 
-var paths = [
-	'hello',
-	'foo/bar',
-	'hello/world',
-	'hello/world/tidy/'
-]
+### Prerequisite
 
-var depth = dir.byDepth(paths);
+#### Node JS
+https://nodejs.org/
 
-console.log(depth[0]); //['hello']
-console.log(depth[1]); //['foo/bar','hello/world']
-console.log(depth[2]); //['hello/world/tidy/']
-```
+### Examples
 
-### .sortPaths()
-Sorts paths by depth (deepest to shallowest) and alphanumerically within a single dir depth.
-Note: to correctly sort within a single dir depth, **numbers should be left-padded by 0**
+#### mkTree()
+Makes directiories, inclusing the necessary path. For example ./foo/bar/hello if foo/bar does not exists, it will make it. 
+Returns a promise.
+If directories exist returned promise will be resolved.
+If it can't make any of the directiories, the returned promise will be rejected.
 
-```javascript
-var dir = require('tidydir');
+@dirs - paths of dirs | string,array 
 
-var paths = [
-	'hello',
-	'hello/world/tidy/',
-	'hello/world',
-	'foo/bar'
-]
+Notes: 
+- Paths may use either / or \
+- if dir or any dirs in path exist already, there is no error thrown (since the desired result is already there)
 
-var sorted = dir.sortPaths(paths);
+#### mkFile()
+Makes files, including the necessary path.
 
-console.log(sorted); 
+@files - file object
+@file.path - path must include filename and **extension**
+@file.content - content of the file - string
+@file.options - options (see fs.writeFile for node) - string (sets character encoding)|object|undefined(defaults to 'utf8', if you want the buffer obj put null as encoding)
 
-/*
-[
-'hello',
-'foo/bar',
-'hello/world',
-'hello/world/tidy/'
-]
-*/
-```
-## Read
-
-### readFile()
-```javascript
-var dir = require('tidydir');
-
-var paths = [
-	'./hello.js',
-	'./foo/bar',
-	'./hello/world.js',
-	'./hello/world/tidy/'
-]
-
-//Will return an array of file objects
-var fileObjects = dir.readFile(paths);
-
-console.log(fileObjects[0]); //[{path : './hello.js', content: 'helloworld'}]
-
-//A single file object
-var fileObj = dir.readFile(paths);
-console.log(fileObj); //{path : './hello.js', content: 'helloworld'}
-```
-
-### listTree()
-```javascript
-var dir = require('tidydir');
-
-//For a given tree structure
-var paths = [
-	'./hello',
-	'./hello/bar.js',
-	'./hello/world.txt',
-	'./hello/foo/
-	'./hello/bar/code'
-]
-
-var treeList = dir.listTree('./hello');
-console.log(treeList);
-/*
-{
-dirs : ['./hello',
-		'./hello/foo',
-		'./hello/bar/code'],
-files : ['./hello/bar.js',
-		'./hello/world.txt',]
-}
-*/
-```
-
-### readTree()
-Returns tree object.
+Notes: 
+- Paths may use either / or \
+- it will make any missing dirs in the filepath
+- overwrites existing files with same path (if file already exists at same path, it will overwrite it)
 
 ```javascript
-var tree = readTree('./');
+Possible params:
+- path, content, options
+- {path, content, options}, options 
+- [{path,content,options}], options
 
-tree.files //like readFile for all files within tree
-tree.dirs //list of all dirs
+//options within object overrides param options
 ```
 
-## Write
+#### listTree()
+Returns tree content as an object with a two properties, 
+`files` and `dirs` (both are arrays of strings).
 
-### mkFile()
-### mkTree()
+#### rmFile()
+Removes file(s).
 
-## Remove
+#### rmDir()
+Like the native rmdir from Node's fs module, but:
+- is promisified
+- allows multiple dirs as arugment (array of paths)
 
-### rmFile()
-Removes file/s.
+#### rmTree()
+Removes tree(s) and all it's content 
+(all contained files and folders).
 
-@filePath | string, array
+#### emptyTree()
+Removes all contents (files and directories) 
+within a given path.
 
-### rmTree()
-Removes folder/s and it's content.
+#### readTree()
+```javascript
+path, options, filter
+{path, options, filter}, options, filter
+[path], options, filter
+[{path, options, filter}], options, filter
+```
 
-@dirPath | string, array
+#### readFile()
+Reads files
+For single file path returns single file obj for array of file paths returns array of file objects
 
-## Paths
+@files - file object
+@file.path - path must include filename and **extension**
+@file.options - options (see fs.writeFile for node) - string (sets character encoding)|object|undefined(defaults to 'utf8', if you want the buffer obj put null as encoding)
 
-### fileExt()
-### rmExt()
+Notes: 
+- For non-text items you should set options = null or options.encoding = null
+
+```javascript
+path, options, filter
+{path, options}, options, filter
+[path], options, filter
+[{path, options}], options, filter
+```
+
+---
+
+#### mk
+Will figure out based on path (see tidypath isFile()) 
+and will make a tree or file accordingly. 
+
+Put differently, automagical synonym for both mkFile() 
+and mkTree().
+
+#### read 
+Will figure out based on path (see tidypath isFile()) 
+and will read a tree or file accordingly. 
+
+Put differently, automagical synonym for both readFile() 
+and readTree().
+
+#### rm
+Will figure out based on path (see tidypath isFile()) 
+and will remove a tree or file accordingly. 
+
+Put differently, automagical synonym for both rmFile() 
+and rmTree().
+
+#### empty()
+Synonym for emptyTree()
+
+#### list()
+Synonym for listTree()
+
+#### ls()
+Synonym for listTree()
