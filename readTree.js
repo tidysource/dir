@@ -27,7 +27,8 @@ var readTree = function readTree(param1, param2, filter){
 	//options vs filter
 	if (typeof param2 === 'string'){
 		if (param2 === 'dotifle'
-		 || param2.slice(0,1) === '.'){
+		 || param2.slice(0,1) === '.'
+		 || Array.isArray(param2)){
 			 filter = param2;
 		 }
 	}
