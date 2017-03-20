@@ -92,21 +92,21 @@ path, options, filter
 
 ---
 
-#### mk
+#### mk()
 Will figure out based on path (see tidypath isFile()) 
 and will make a tree or file accordingly. 
 
 Put differently, automagical synonym for both mkFile() 
 and mkTree().
 
-#### read 
+#### read() 
 Will figure out based on path (see tidypath isFile()) 
 and will read a tree or file accordingly. 
 
 Put differently, automagical synonym for both readFile() 
 and readTree().
 
-#### rm
+#### rm()
 Will figure out based on path (see tidypath isFile()) 
 and will remove a tree or file accordingly. 
 
