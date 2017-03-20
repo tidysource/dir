@@ -35,7 +35,7 @@
     "rmduplicate": "^1.0.0",
     "rmtrailing": "^1.0.2",
     "tidyfs": "^1.1.0",
-    "tidypath": "^1.4.1"
+    "tidypath": "^1.5.2"
   },
   "devDependencies": {
     "tidytest": "^1.0.1"

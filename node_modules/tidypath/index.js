@@ -33,4 +33,7 @@ path.tree = require('./tree.js');
 avaliableProp(path, 'filter');
 path.filter = require('./filter.js');
 
+avaliableProp(path, 'isFile');
+path.isFile = require('./isFile.js');
+
 module.exports = path;

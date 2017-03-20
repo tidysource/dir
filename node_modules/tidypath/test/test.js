@@ -85,7 +85,7 @@ test('rmExt()', function(assert){
 });
 
 test('dotfile()', function(assert){
-    assert.plan(7);
+    assert.plan(9);
 	
 	assert.equal(path.dotfile('foo.txt'), '');
 	assert.equal(path.dotfile('./foo/bar'), '');
@@ -95,6 +95,8 @@ test('dotfile()', function(assert){
 	assert.equal(path.dotfile('foo/bar.ver7.txt'), '');
 	assert.equal(path.dotfile('foo/.bar'), '.bar');
 	assert.equal(path.dotfile('.txt'), '.txt');
+	assert.equal(path.dotfile('./'), '');
+	assert.equal(path.dotfile('.'), '');
 });
 
 test('file()', function(assert){
@@ -150,4 +152,19 @@ test('filter()', function(assert){
 	assert.deepEqual(path.filter(paths, path.dotfile), ['.dot']);
 	assert.deepEqual(path.filter(paths), onlyStrings);
 	assert.deepEqual(path.filter(paths, '.js', false), noJS);
+});
+
+test('isFile()', function(assert){
+    assert.plan(10);
+	
+	assert.equal(path.isFile('./hello/world.txt'), true);
+	assert.equal(path.isFile('hello/world/foo.txt'), true);
+	assert.equal(path.isFile('hello/world'), false);
+	assert.equal(path.isFile('hello/world/.foo'), true);
+	assert.equal(path.isFile('./foo.txt'), true);
+	assert.equal(path.isFile('foo.txt'), true);
+	assert.equal(path.isFile('.dotfile'), true);
+	assert.equal(path.isFile('./'), false);
+	assert.equal(path.isFile('.'), false);
+	assert.equal(path.isFile(''), false);
 });

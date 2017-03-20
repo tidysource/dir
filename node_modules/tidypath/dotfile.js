@@ -7,7 +7,13 @@ module.exports = function dotfile(str){
 	var slash = str.lastIndexOf(path.sep);
 	
 	if (slash + 1 === dot){
-		return str.slice(dot);
+		var result = str.slice(dot);
+		if (result.length > 1){ //not '.'
+			return str.slice(dot);
+		}
+		else{
+			return '';
+		}
 	}
 	else{
 		return '';
