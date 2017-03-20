@@ -145,7 +145,7 @@ test('mkFile()', function(assert){
 });
 
 test('listTree()', function(assert){
-	assert.plan(2);
+	assert.plan(3);
 	
 	var testTree = { 
 		files: 
@@ -193,6 +193,20 @@ test('listTree()', function(assert){
 		.then(function(tree){
 			assert.deepEqual(tree, testTree,
 					'List a filtered tree')
+		})
+		.catch(function(err){
+			assert.fail(err);
+		});	
+		
+	dir.listTree(['./test/testdir/helloworld',
+				'./test/testdir/foo'])
+		.then(function(tree){
+			assert.deepEqual(tree, 
+							{
+							files : testTree.files.slice(2,8),
+							dirs : testTree.dirs.slice(5)
+							},
+							'List multiple trees')
 		})
 		.catch(function(err){
 			assert.fail(err);
@@ -898,7 +912,7 @@ test('mk() as mkFile substitute', function(assert){
 });
 
 test('list() as listTree() synonym', function(assert){
-	assert.plan(2);
+	assert.plan(3);
 	
 	var testTree = { 
 		files: 
@@ -950,10 +964,24 @@ test('list() as listTree() synonym', function(assert){
 		.catch(function(err){
 			assert.fail(err);
 		});	
+		
+	dir.list(['./test/testdir/helloworld',
+				'./test/testdir/foo'])
+		.then(function(tree){
+			assert.deepEqual(tree, 
+							{
+							files : testTree.files.slice(2,8),
+							dirs : testTree.dirs.slice(5)
+							},
+							'List multiple trees')
+		})
+		.catch(function(err){
+			assert.fail(err);
+		});	
 });
 
 test('ls() as listTree() synonym', function(assert){
-	assert.plan(2);
+	assert.plan(3);
 	
 	var testTree = { 
 		files: 
@@ -1001,6 +1029,20 @@ test('ls() as listTree() synonym', function(assert){
 		.then(function(tree){
 			assert.deepEqual(tree, testTree,
 					'List a filtered tree')
+		})
+		.catch(function(err){
+			assert.fail(err);
+		});	
+		
+	dir.ls(['./test/testdir/helloworld',
+				'./test/testdir/foo'])
+		.then(function(tree){
+			assert.deepEqual(tree, 
+							{
+							files : testTree.files.slice(2,8),
+							dirs : testTree.dirs.slice(5)
+							},
+							'List multiple trees')
 		})
 		.catch(function(err){
 			assert.fail(err);
